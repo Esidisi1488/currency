@@ -1,5 +1,6 @@
 from django.db import models
 
+Homework5
 
 class Rate(models.Model):
     buy = models.DecimalField(max_digits=6, decimal_places=2)
@@ -13,3 +14,6 @@ class ContactUs(models.Model):
     email_from = models.EmailField(max_length=100)
     subject = models.CharField(max_length=100)
     message = models.TextField()
+
+# Create your models here.
+main

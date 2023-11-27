@@ -37,15 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-Homework5
+
 
     'django_extensions',
 
     'currency',
 
-
-    'currency',
-main
 ]
 
 MIDDLEWARE = [

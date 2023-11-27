@@ -1,6 +1,5 @@
-Homework5
 from django.http.response import HttpResponse
-
+# from django.shortcuts import render
 from currency.models import Rate, ContactUs
 
 
@@ -32,7 +31,5 @@ def contact_us_list(request):
 
     return HttpResponse(str(results))
 
-from django.shortcuts import render
 
 # Create your views here.
-main

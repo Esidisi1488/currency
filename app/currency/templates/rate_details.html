@@ -5,7 +5,7 @@
 {% endblock title %}
 
 {% block content %}
-<a href="/rate/create/">Create</a><br>
+<a href="{% url 'currency:rate-create' %}">Create</a><br>
 
 <table>
 <!--    <tr>-->
@@ -25,8 +25,8 @@
         <td>{{ rate.created }}</td>
         <td>{{ rate.type }}</td>
         <td>{{ rate.source }}</td>
-        <td><a href="/rate/update/{{rate.id}}/">Edit</a></td>
-        <td><a href="/rate/delete/{{rate.id}}/">Delete</a></td>
+        <td><a href="{% url 'currency:rate-update' rate.id %}">Edit</a></td>
+        <td><a href="{% url 'currency:rate-delete' rate.id %}">Delete</a></td>
     </tr>
 
 

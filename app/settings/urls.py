@@ -9,7 +9,7 @@ from currency.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('currency/', include('currency.urls')),
-    path('', IndexView.as_view()),
+    path('', IndexView.as_view(), name='index'),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
 

@@ -3,6 +3,8 @@ from django.views.generic import (
     DeleteView, DetailView, TemplateView
 )
 from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from time import time
 from currency.models import Rate, ContactUs, Source
 from currency.forms import RateForm, SourceForm, ContactusForm
 
@@ -43,10 +45,50 @@ class ContactusListView(ListView):
     template_name = 'contactus_list.html'
 
 
-class ContactusCreateView(CreateView):
+class TimeItMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        print('BEFORE IN VIEW')
+        start = time()
+
+        response = super().dispatch(request, *args, **kwargs)
+
+        end = time()
+        print(f'AFTER IN VIEW {end - start}')
+
+        return response
+
+
+class ContactusCreateView(TimeItMixin, CreateView):
     form_class = ContactusForm
-    success_url = reverse_lazy('contactus-list')
+    success_url = reverse_lazy('index')
     template_name = 'contactus_create.html'
+
+    def _send_email(self):
+        from django.conf import settings
+        recipient = settings.DEFAULT_FROM_EMAIL
+        subject = 'User contact us'
+        body = f'''
+                Name: {self.object.name}
+                Email: {self.object.email_from}
+                Subject: {self.object.subject}
+                Message: {self.object.message}
+                '''
+
+        send_mail(
+            subject,
+            body,
+            recipient,
+            [recipient],
+            fail_silently=False,
+        )
+
+    def form_valid(self, form):
+        redirect = super().form_valid(form)
+
+        self._send_email()
+
+        return redirect
 
 
 class ContactusUpdateView(UpdateView):

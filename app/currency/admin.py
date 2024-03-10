@@ -75,6 +75,7 @@ class ContactusAdmin(admin.ModelAdmin):
 @admin.register(RequestResponseLog)
 class RequestResponseLogAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'path',
         'request_method',
         'time'

@@ -157,22 +157,4 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
 
-class ProfileView(LoginRequiredMixin, UpdateView):
-    model = get_user_model()
-    template_name = 'profile.html'
-    success_url = reverse_lazy('index')
-    fields = (
-        'first_name',
-        'last_name'
-    )
-
-    # def get_queryset(self):
-    #     qs = super().get_queryset().filter(id=self.request.user.id)
-    #     return qs
-
-    def get_object(self, queryset=None):
-        qs = self.get_queryset()
-
-        return qs.get(id=self.request.user.id)
-
 # Create your views here.

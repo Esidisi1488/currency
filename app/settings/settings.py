@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'import_export',
 
     'currency',
+    'account',
 
 ]
 
@@ -117,6 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'account.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -153,3 +155,7 @@ DEFAULT_FROM_EMAIL = 'olegostapenko1488@gmail.com'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
+
+
+HTTP_METHOD = 'http'
+DOMAIN = '0.0.0.0:8000'

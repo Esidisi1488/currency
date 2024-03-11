@@ -2,6 +2,13 @@ from django.views.generic import (
     ListView, CreateView, UpdateView,
     DeleteView, DetailView, TemplateView
 )
+
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from time import time
@@ -10,31 +17,38 @@ from currency.forms import RateForm, SourceForm, ContactusForm
 
 
 # RATE
-class RateListView(ListView):
+class RateListView(LoginRequiredMixin, ListView):
     queryset = Rate.objects.all()
     template_name = 'rate_list.html'
 
 
-class RateCreateView(CreateView):
+class RateCreateView(LoginRequiredMixin, CreateView):
     form_class = RateForm
     success_url = reverse_lazy('currency:rate-list')
     template_name = 'rate_create.html'
 
 
-class RateUpdateView(UpdateView):
+class RateUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        return self.request.user.is_superuser
+
     model = Rate
     form_class = RateForm
     success_url = reverse_lazy('currency:rate-list')
     template_name = 'rate_update.html'
 
 
-class RateDeleteView(DeleteView):
+class RateDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
     model = Rate
     success_url = reverse_lazy('currency:rate-list')
     template_name = 'rate_delete.html'
 
 
-class RateDetailsView(DetailView):
+class RateDetailsView(LoginRequiredMixin, DetailView):
     model = Rate
     template_name = 'rate_details.html'
 
@@ -141,4 +155,24 @@ class SourceDetailsView(DetailView):
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+
+class ProfileView(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    template_name = 'profile.html'
+    success_url = reverse_lazy('index')
+    fields = (
+        'first_name',
+        'last_name'
+    )
+
+    # def get_queryset(self):
+    #     qs = super().get_queryset().filter(id=self.request.user.id)
+    #     return qs
+
+    def get_object(self, queryset=None):
+        qs = self.get_queryset()
+
+        return qs.get(id=self.request.user.id)
+
 # Create your views here.

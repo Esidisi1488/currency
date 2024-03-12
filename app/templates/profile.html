@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
 
 {% block title %}Profile{% endblock %}
 
@@ -6,12 +9,20 @@
 
     <h1>Profile</h1>
 
-    <form method="post">
+<!--{#    {% if user.avatar %}#}-->
+<!--{#        <img style="height: 100px; width:100px" src="{{ user.avatar.url }}" alt="avatar">#}-->
+<!--{#    {% else %}#}-->
+<!--{#        <img style="height: 100px; width:100px" src="{% static 'anonymous-user.webp' %}" alt="avatar">#}-->
+<!--{#    {% endif %}#}-->
+
+    <img style="height: 100px; width:100px" src="{{ user.avatar_url }}" alt="avatar">
+
+    <form method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
 
-    <button type="submit">Update</button>
+    <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
 {% endblock %}

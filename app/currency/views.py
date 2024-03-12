@@ -108,13 +108,13 @@ class ContactusCreateView(TimeItMixin, CreateView):
 class ContactusUpdateView(UpdateView):
     model = ContactUs
     form_class = ContactusForm
-    success_url = reverse_lazy('contactus-list')
+    success_url = reverse_lazy('currency:contactus-list')
     template_name = 'contactus_update.html'
 
 
 class ContactusDeleteView(DeleteView):
     model = ContactUs
-    success_url = reverse_lazy('contactus-list')
+    success_url = reverse_lazy('currency:contactus-list')
     template_name = 'contactus_delete.html'
 
 
@@ -131,20 +131,20 @@ class SourceListView(ListView):
 
 class SourceCreateView(CreateView):
     form_class = SourceForm
-    success_url = reverse_lazy('source-list')
+    success_url = reverse_lazy('currency:source-list')
     template_name = 'source_create.html'
 
 
 class SourceUpdateView(UpdateView):
     model = Source
     form_class = SourceForm
-    success_url = reverse_lazy('source-list')
+    success_url = reverse_lazy('currency:source-list')
     template_name = 'source_update.html'
 
 
 class SourceDeleteView(DeleteView):
     model = Source
-    success_url = reverse_lazy('source-list')
+    success_url = reverse_lazy('currency:source-list')
     template_name = 'source_delete.html'
 
 

@@ -4,6 +4,11 @@ ipython
 django-debug-toolbar
 django-admin-rangefilter
 django-import-export
+django-storages
+boto3
+django-crispy-forms
+Celery
+requests
 
 #flake8
 flake8

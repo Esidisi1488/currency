@@ -22,6 +22,7 @@ class SourceForm(forms.ModelForm):
         fields = (
             'source_url',
             'name',
+            'logo',
         )
 
 
@@ -30,6 +31,7 @@ class ContactusForm(forms.ModelForm):
     class Meta:
         model = ContactUs
         fields = (
+            'name',
             'email_from',
             'subject',
             'message',

@@ -26,7 +26,7 @@ class Rate(models.Model):
         verbose_name_plural = _('Rates')
 
     def __str__(self):
-        return f'{self.buy} - {self.sell} - {self.source}'
+        return f'{self.buy} - {self.sell}'
 
 
 class ContactUs(models.Model):
@@ -44,6 +44,7 @@ class ContactUs(models.Model):
 class Source(models.Model):
     source_url = models.CharField(_('Source url'), max_length=255)
     name = models.CharField(_('Name'), max_length=64)
+    code_name = models.CharField(_('Code name'), max_length=64, unique=True)
     logo = models.FileField(_('Logo'), default=None, null=True, blank=True, upload_to=user_directory_path)
 
     class Meta:

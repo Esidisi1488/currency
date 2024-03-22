@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.views.generic import (
     ListView, CreateView, UpdateView,
     DeleteView, DetailView, TemplateView
@@ -10,8 +11,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 from django.urls import reverse_lazy
-from django.core.mail import send_mail
 from time import time
+from currency.tasks import send_email_in_background
 from currency.models import Rate, ContactUs, Source
 from currency.forms import RateForm, SourceForm, ContactusForm
 
@@ -79,6 +80,10 @@ class ContactusCreateView(TimeItMixin, CreateView):
     template_name = 'contactus_create.html'
 
     def _send_email(self):
+        '''
+        | 00:00 - 07:59 | 08:00 - 17:59 | 18:00 - 23:59 |
+        | eta - 8:00    |  now          | eta - 8:00 next day|
+        '''
         from django.conf import settings
         recipient = settings.DEFAULT_FROM_EMAIL
         subject = 'User contact us'
@@ -88,13 +93,12 @@ class ContactusCreateView(TimeItMixin, CreateView):
                 Subject: {self.object.subject}
                 Message: {self.object.message}
                 '''
-
-        send_mail(
-            subject,
-            body,
-            recipient,
-            [recipient],
-            fail_silently=False,
+        eta = datetime.now() + timedelta(seconds=60)
+        send_email_in_background.apply_async(
+            kwargs={
+                'subject': subject,
+                'body': body
+            }
         )
 
     def form_valid(self, form):
